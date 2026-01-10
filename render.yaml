@@ -2,13 +2,11 @@
 # https://render.com/docs/yaml-spec
 
 services:
-  # Web service for rendering API
+  # Web service for rendering API (Docker-based for Playwright)
   - type: web
     name: asset-renderer
-    runtime: node
+    runtime: docker
     plan: starter  # Needs memory for Chromium (~512MB minimum)
-    buildCommand: npm ci && npm run build && npx playwright install --with-deps chromium
-    startCommand: npm start
     healthCheckPath: /health
     envVars:
       - key: PORT
