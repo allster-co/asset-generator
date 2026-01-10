@@ -17,7 +17,7 @@ interface Display16x9Props {
   categoryLabel?: string;
 }
 
-export function Display16x9(props: Record<string, unknown>): JSX.Element {
+export function Display16x9(props: Record<string, unknown>): React.ReactElement {
   const {
     rank = 1,
     locationName = 'Location',
@@ -25,7 +25,7 @@ export function Display16x9(props: Record<string, unknown>): JSX.Element {
     datePeriod = '2026',
     websiteDomain = 'www.vetsinengland.com',
     categoryLabel,
-  } = props as Display16x9Props;
+  } = props as unknown as Display16x9Props;
 
   const titlePrefix = categoryLabel ? `${categoryLabel} ` : '';
   const title = `${titlePrefix}Vet in ${locationName}`;

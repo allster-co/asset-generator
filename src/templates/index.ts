@@ -1,29 +1,70 @@
 /**
  * Template Registry
  * 
- * Maps template keys to React components.
+ * Maps templateKey -> version -> React component.
+ * Supports versioning for future template iterations.
  */
 
+import React from 'react';
 import { CertificateA4 } from './certificate-a4';
 import { SocialSquare } from './social-square';
 import { SocialStory } from './social-story';
 import { Display16x9 } from './display-16x9';
 
-export type TemplateComponent = (props: Record<string, unknown>) => JSX.Element;
+export type TemplateComponent = (props: Record<string, unknown>) => React.ReactElement;
 
-export const templates: Record<string, TemplateComponent> = {
-  'certificate-a4': CertificateA4,
-  'social-square': SocialSquare,
-  'social-story': SocialStory,
-  'display-16x9': Display16x9,
+/**
+ * Versioned template registry.
+ * Structure: templates[templateKey][version] = Component
+ */
+export const templates: Record<string, Record<number, TemplateComponent>> = {
+  'certificate-a4': {
+    1: CertificateA4,
+  },
+  'social-square': {
+    1: SocialSquare,
+  },
+  'social-story': {
+    1: SocialStory,
+  },
+  'display-16x9': {
+    1: Display16x9,
+  },
 };
 
 /**
- * Default templates to generate for each award.
+ * Get a template component by key and version.
+ * Returns undefined if not found.
  */
-export const DEFAULT_TEMPLATES = [
-  { key: 'certificate-a4', version: 1, variant: 'A4', format: 'PDF' as const },
-  { key: 'social-square', version: 1, variant: '1080x1080', format: 'PNG' as const },
-  { key: 'social-story', version: 1, variant: '1080x1920', format: 'PNG' as const },
-  { key: 'display-16x9', version: 1, variant: '1920x1080', format: 'PNG' as const },
-];
+export function getTemplate(templateKey: string, version: number): TemplateComponent | undefined {
+  return templates[templateKey]?.[version];
+}
+
+/**
+ * Check if a template key exists (any version).
+ */
+export function hasTemplate(templateKey: string): boolean {
+  return templateKey in templates;
+}
+
+/**
+ * Check if a specific template version exists.
+ */
+export function hasTemplateVersion(templateKey: string, version: number): boolean {
+  return templates[templateKey]?.[version] !== undefined;
+}
+
+/**
+ * Get all available template keys.
+ */
+export function getTemplateKeys(): string[] {
+  return Object.keys(templates);
+}
+
+/**
+ * Get available versions for a template.
+ */
+export function getTemplateVersions(templateKey: string): number[] {
+  const versions = templates[templateKey];
+  return versions ? Object.keys(versions).map(Number) : [];
+}

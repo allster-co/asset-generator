@@ -18,7 +18,7 @@ interface CertificateA4Props {
   categoryLabel?: string;
 }
 
-export function CertificateA4(props: Record<string, unknown>): JSX.Element {
+export function CertificateA4(props: Record<string, unknown>): React.ReactElement {
   const {
     rank = 1,
     locationName = 'Location',
@@ -26,7 +26,7 @@ export function CertificateA4(props: Record<string, unknown>): JSX.Element {
     datePeriod = '2026',
     websiteDomain = 'www.vetsinengland.com',
     categoryLabel,
-  } = props as CertificateA4Props;
+  } = props as unknown as CertificateA4Props;
 
   // Build the title based on whether there's a category
   const titlePrefix = categoryLabel ? `${categoryLabel} ` : '';

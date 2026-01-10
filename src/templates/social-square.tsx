@@ -17,7 +17,7 @@ interface SocialSquareProps {
   categoryLabel?: string;
 }
 
-export function SocialSquare(props: Record<string, unknown>): JSX.Element {
+export function SocialSquare(props: Record<string, unknown>): React.ReactElement {
   const {
     rank = 1,
     locationName = 'Location',
@@ -25,7 +25,7 @@ export function SocialSquare(props: Record<string, unknown>): JSX.Element {
     datePeriod = '2026',
     websiteDomain = 'www.vetsinengland.com',
     categoryLabel,
-  } = props as SocialSquareProps;
+  } = props as unknown as SocialSquareProps;
 
   const titlePrefix = categoryLabel ? `${categoryLabel} ` : '';
   const title = `${titlePrefix}Vet in ${locationName}`;

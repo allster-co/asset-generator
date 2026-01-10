@@ -17,7 +17,7 @@ interface SocialStoryProps {
   categoryLabel?: string;
 }
 
-export function SocialStory(props: Record<string, unknown>): JSX.Element {
+export function SocialStory(props: Record<string, unknown>): React.ReactElement {
   const {
     rank = 1,
     locationName = 'Location',
@@ -25,7 +25,7 @@ export function SocialStory(props: Record<string, unknown>): JSX.Element {
     datePeriod = '2026',
     websiteDomain = 'www.vetsinengland.com',
     categoryLabel,
-  } = props as SocialStoryProps;
+  } = props as unknown as SocialStoryProps;
 
   const titlePrefix = categoryLabel ? `${categoryLabel} ` : '';
   const title = `${titlePrefix}Vet in ${locationName}`;
