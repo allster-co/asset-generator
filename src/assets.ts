@@ -63,9 +63,13 @@ function loadAsset(assetFile: string): string {
 export const assets = {
   // Images
   backgroundFrame: loadAsset('background-frame.png'),
-  awardRosette: loadAsset('award-rosette.svg'),
+  goldRosette: loadAsset('gold-award-rosette.png'),
+  silverRosette: loadAsset('silver-rosette-award.svg'),
+  bronzeRosette: loadAsset('bronze-rosette-award.svg'),
+  greenRosette: loadAsset('green-rosette-award.svg'),
   divider: loadAsset('divider.svg'),
   logo: loadAsset('logo.svg'),
+  watermarkOverlay: loadAsset('watermark-overlay.png'),
 
   // Fonts (add actual font files when available)
   fonts: {

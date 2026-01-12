@@ -30,6 +30,20 @@ export function Display16x9(props: Record<string, unknown>): React.ReactElement 
   const titlePrefix = categoryLabel ? `${categoryLabel} ` : '';
   const title = `${titlePrefix}Vet in ${locationName}`;
 
+  // Select rosette based on rank
+  let rosetteImage: string;
+  if (rank === 1) {
+    rosetteImage = assets.goldRosette;
+  } else if (rank === 2) {
+    rosetteImage = assets.silverRosette;
+  } else if (rank === 3) {
+    rosetteImage = assets.bronzeRosette;
+  } else if (rank >= 4 && rank <= 10) {
+    rosetteImage = assets.greenRosette;
+  } else {
+    rosetteImage = assets.greenRosette;
+  }
+
   return (
     <html>
       <head>
@@ -172,8 +186,8 @@ export function Display16x9(props: Record<string, unknown>): React.ReactElement 
           <div className="content">
             <div className="left-section">
               <div className="rosette-container">
-                {assets.awardRosette && (
-                  <img src={assets.awardRosette} className="rosette-img" alt="" />
+                {rosetteImage && (
+                  <img src={rosetteImage} className="rosette-img" alt="" />
                 )}
                 <div className="rank-number">#{rank}</div>
               </div>

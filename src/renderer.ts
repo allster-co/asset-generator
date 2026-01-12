@@ -111,7 +111,7 @@ export async function render(options: RenderOptions): Promise<RenderResult> {
     }
 
     // Load content
-    await page.setContent(html, { waitUntil: 'domcontentloaded' });
+    await page.setContent(html, { waitUntil: 'networkidle' });
 
     // Wait for render-ready flag
     await page.waitForSelector('[data-render-ready="1"]', { timeout: 10000 });
