@@ -8,7 +8,7 @@
 import React from 'react';
 import { CertificateA4 } from './certificate-a4';
 import { SocialSquare } from './social-square';
-import { SocialStory } from './social-story';
+import { SocialPost } from './social-post';
 import { Display16x9 } from './display-16x9';
 
 export type TemplateComponent = (props: Record<string, unknown>) => React.ReactElement;
@@ -24,8 +24,8 @@ export const templates: Record<string, Record<number, TemplateComponent>> = {
   'social-square': {
     1: SocialSquare,
   },
-  'social-story': {
-    1: SocialStory,
+  'social-post': {
+    1: SocialPost,
   },
   'display-16x9': {
     1: Display16x9,

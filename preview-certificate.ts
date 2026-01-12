@@ -14,7 +14,7 @@ async function generatePreview() {
   // Sample data for the certificate
   const payload = {
     rank: 1,
-    locationName: 'Wakefield',
+    locationName: 'Greater Manchester',
     clinicName: 'Wakefield Veterinary Clinic',
     datePeriod: 'January - March 2026',
     websiteDomain: 'www.vetsinengland.com',

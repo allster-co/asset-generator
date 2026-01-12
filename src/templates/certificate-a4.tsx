@@ -38,6 +38,12 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
   const titlePrefix = categoryLabel ? `${categoryLabel} ` : '';
   const title = `${titlePrefix}Vet in ${locationName}`;
 
+  // Reduce font size for long location names
+  const isLongLocationName = locationName.length > 10;
+  
+  // Reduce font size for long clinic names
+  const isLongClinicName = clinicName.length > 50;
+
   // Select rosette based on rank
   let rosetteImage: string;
   if (rank === 1) {
@@ -166,6 +172,10 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
             font-family: 'Lora', Georgia, serif;
           }
           
+          .clinic-name-top-long {
+            font-size: 40.8px;
+          }
+          
           .awarded-text {
             font-size: 24px;
             font-style: italic;
@@ -182,6 +192,10 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
             margin-bottom: 20px;
             text-align: center;
             font-family: 'Lora', Georgia, serif;
+          }
+          
+          .title-long {
+            font-size: 35.7px;
           }
           
           .divider {
@@ -312,7 +326,7 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
               <img src={assets.divider} className="divider-top" alt="" />
             )}
             
-            <h2 className="clinic-name-top">{clinicName}</h2>
+            <h2 className={`clinic-name-top ${isLongClinicName ? 'clinic-name-top-long' : ''}`}>{clinicName}</h2>
             
             <p className="awarded-text">is hereby awarded</p>
             
@@ -323,7 +337,7 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
               <div className="rank-number">#{rank}</div>
             </div>
             
-            <h1 className="title">#{rank} {title}</h1>
+            <h1 className={`title ${isLongLocationName ? 'title-long' : ''}`}>#{rank} {title}</h1>
             
             <p className="date-period">{datePeriod}</p>
             

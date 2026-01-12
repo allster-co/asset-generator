@@ -137,12 +137,29 @@ export async function render(options: RenderOptions): Promise<RenderResult> {
     let mimeType: string;
 
     if (format === 'PDF') {
-      // PDF: format from variant (A4, A5, etc.)
-      const pdfFormat = variant.toUpperCase() as 'A4' | 'A5';
-      buffer = await page.pdf({
-        format: pdfFormat,
-        printBackground: true,
-      });
+      // PDF: format from variant (A4, A5, etc.) or custom dimensions
+      if (variant === 'CUSTOM' || variant.includes('x')) {
+        // Custom dimensions - use the viewport size set earlier or parse from variant
+        let pdfWidth = width;
+        let pdfHeight = height;
+        
+        if (variant.includes('x')) {
+          const dims = variant.split('x').map(Number);
+          [pdfWidth, pdfHeight] = dims;
+        }
+        
+        buffer = await page.pdf({
+          width: `${pdfWidth}px`,
+          height: `${pdfHeight}px`,
+          printBackground: true,
+        });
+      } else {
+        const pdfFormat = variant.toUpperCase() as 'A4' | 'A5';
+        buffer = await page.pdf({
+          format: pdfFormat,
+          printBackground: true,
+        });
+      }
       mimeType = 'application/pdf';
     } else {
       buffer = await page.screenshot({ type: 'png' });

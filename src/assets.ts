@@ -70,6 +70,13 @@ export const assets = {
   divider: loadAsset('divider.svg'),
   logo: loadAsset('logo.svg'),
   watermarkOverlay: loadAsset('watermark-overlay.png'),
+  
+  // Social Post assets
+  socialPostBackground: loadAsset('social-post/social-post-background.svg'),
+  congratulationsRibbon: loadAsset('social-post/congratulations-ribbon.svg'),
+  socialPostDog: loadAsset('social-post/social-post-dog.svg'),
+  socialPostCat: loadAsset('social-post/social-post-cat.svg'),
+  socialPostWatermark: loadAsset('social-post/social-post-watermark.svg'),
 
   // Fonts (add actual font files when available)
   fonts: {
