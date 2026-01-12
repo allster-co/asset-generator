@@ -48,7 +48,7 @@ export function validateRenderOptions(options: RenderOptions): void {
   // Validate template key exists
   if (!hasTemplate(templateKey)) {
     throw new RenderValidationError(
-      `Unknown template: ${templateKey}. Available: certificate-a4, social-square, social-story, display-16x9`
+      `Unknown template: ${templateKey}. Available: certificate-a4, social-square, social-post, display-16x9`
     );
   }
 
@@ -73,9 +73,13 @@ export function validateRenderOptions(options: RenderOptions): void {
       );
     }
   } else {
-    if (!VALID_PDF_VARIANTS.includes(variant as typeof VALID_PDF_VARIANTS[number])) {
+    // For PDF, allow standard variants (A4, A5) or custom dimensions (e.g., 1080x1080)
+    const isStandardVariant = VALID_PDF_VARIANTS.includes(variant as typeof VALID_PDF_VARIANTS[number]);
+    const isCustomDimensions = /^\d+x\d+$/.test(variant);
+    
+    if (!isStandardVariant && !isCustomDimensions) {
       throw new RenderValidationError(
-        `Invalid PDF variant: ${variant}. Must be one of: ${VALID_PDF_VARIANTS.join(', ')}`
+        `Invalid PDF variant: ${variant}. Must be one of: ${VALID_PDF_VARIANTS.join(', ')} or custom dimensions (e.g., 1080x1080)`
       );
     }
   }
@@ -105,6 +109,13 @@ export async function render(options: RenderOptions): Promise<RenderResult> {
   try {
     // PNG: Set viewport BEFORE setContent
     if (format === 'PNG') {
+      const dims = variant.split('x').map(Number);
+      [width, height] = dims;
+      await page.setViewportSize({ width, height });
+    }
+    
+    // PDF with custom dimensions: Set viewport BEFORE setContent
+    if (format === 'PDF' && variant.includes('x')) {
       const dims = variant.split('x').map(Number);
       [width, height] = dims;
       await page.setViewportSize({ width, height });
