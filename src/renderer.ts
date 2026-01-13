@@ -194,7 +194,7 @@ export async function render(options: RenderOptions): Promise<RenderResult> {
       }
       mimeType = 'application/pdf';
     } else {
-      buffer = await page.screenshot({ type: 'png' });
+      buffer = await page.screenshot({ type: 'png', omitBackground: true });
       mimeType = 'image/png';
     }
 

@@ -211,6 +211,18 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
             font-family: 'Inter', sans-serif;
             filter: drop-shadow(0px 1px 2px rgba(${isGreenTier ? '0,0,0' : '255,255,255'},0.3));
           }
+          
+          .watermark-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0.4;
+          }
         `}</style>
       </head>
       <body data-render-ready="1">
@@ -270,6 +282,11 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
               </svg>
             </div>
           </div>
+          
+          {/* Watermark overlay */}
+          {assets.socialPostWatermark && (
+            <img src={assets.socialPostWatermark} className="watermark-overlay" alt="" />
+          )}
         </div>
       </body>
     </html>
