@@ -118,9 +118,9 @@ export async function render(options: RenderOptions): Promise<RenderResult> {
   console.log(`[renderer] HTML generated: ${html.length} bytes`);
 
   console.log('[renderer] Getting browser...');
-  const browser = await getBrowser();
+  const browserInstance = await getBrowser();
   console.log('[renderer] Creating new page...');
-  const page = await browser.newPage();
+  const page = await browserInstance.newPage();
 
   let width: number | undefined;
   let height: number | undefined;
