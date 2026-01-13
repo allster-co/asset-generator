@@ -63,7 +63,7 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
     <html>
       <head>
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@400;500;600;700&family=Oxygen+Mono:wght@400;700&display=swap');
           
           @page {
             size: A4;
@@ -159,6 +159,7 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Inter', monospace;
           }
           
           .clinic-name-top {

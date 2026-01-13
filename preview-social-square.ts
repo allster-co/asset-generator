@@ -13,7 +13,7 @@ async function generatePreview() {
 
   // Sample data for the social square
   const payload = {
-    rank: 1,
+    rank: 2,
     locationName: 'Wakefield',
     clinicName: 'Abbey House Veterinary Hospital',
     datePeriod: 'January - March 2026',

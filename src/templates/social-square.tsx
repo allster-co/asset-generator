@@ -55,7 +55,7 @@ export function SocialSquare(props: Record<string, unknown>): React.ReactElement
       <head>
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap');
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@400;500;600;700&family=Oxygen+Mono:wght@400;700&display=swap');
 
           
           ${getFontFaceCSS()}
@@ -218,6 +218,7 @@ export function SocialSquare(props: Record<string, unknown>): React.ReactElement
             font-size: 80px !important;
             position: relative;
             top: -16px;
+            font-family: 'Oxygen Mono', monospace;
           }
 
           .title {

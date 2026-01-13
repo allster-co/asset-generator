@@ -48,6 +48,8 @@ export function Display16x9(props: Record<string, unknown>): React.ReactElement 
     <html>
       <head>
         <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Oxygen+Mono:wght@400;700&display=swap');
+          
           ${getFontFaceCSS()}
           
           * {
@@ -116,6 +118,7 @@ export function Display16x9(props: Record<string, unknown>): React.ReactElement 
             font-weight: bold;
             color: #C5A54E;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-family: 'Oxygen Mono', monospace;
           }
           
           .right-section {

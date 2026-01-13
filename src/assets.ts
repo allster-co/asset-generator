@@ -61,15 +61,17 @@ function loadAsset(assetFile: string): string {
  * Add new assets here as needed.
  */
 export const assets = {
-  // Images
-  backgroundFrame: loadAsset('background-frame.png'),
-  goldRosette: loadAsset('gold-award-rosette.png'),
-  silverRosette: loadAsset('silver-rosette-award.svg'),
-  bronzeRosette: loadAsset('bronze-rosette-award.svg'),
-  greenRosette: loadAsset('green-rosette-award.svg'),
-  divider: loadAsset('divider.svg'),
-  logo: loadAsset('logo.svg'),
-  watermarkOverlay: loadAsset('watermark-overlay.png'),
+  // Certificate assets
+  backgroundFrame: loadAsset('certificate/certificate-background-frame.png'),
+  divider: loadAsset('certificate/divider.svg'),
+  watermarkOverlay: loadAsset('certificate/certificate-watermark-overlay.png'),
+  
+  // Shared assets (rosettes and logo)
+  goldRosette: loadAsset('shared/gold-rosette-award.svg'),
+  silverRosette: loadAsset('shared/silver-rosette-award.svg'),
+  bronzeRosette: loadAsset('shared/bronze-rosette-award.svg'),
+  greenRosette: loadAsset('shared/green-rosette-award.svg'),
+  logo: loadAsset('shared/logo.svg'),
   
   // Social Post assets
   socialPostBackground: loadAsset('social-post/social-post-background.svg'),
