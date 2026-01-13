@@ -76,7 +76,7 @@ export const assets = {
   // Social Post assets
   socialPostBackground: loadAsset('social-post/social-post-background.png'),
   congratulationsRibbon: loadAsset('social-post/we-won-ribbon.png'),
-  socialPostDog: loadAsset('social-post/social-post-dog.svg'),
+  socialPostDog: loadAsset('social-post/social-post-dog.png'),
   socialPostCat: loadAsset('social-post/social-post-cat.png'),
   socialPostWatermark: loadAsset('social-post/social-post-watermark.png'),
 
