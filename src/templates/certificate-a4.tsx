@@ -30,7 +30,7 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
     websiteDomain = 'www.vetsinengland.com',
     categoryLabel,
     signatureName = 'E. Holmes',
-    signatureTitle = 'Signed Eddie Holmes',
+    signatureTitle = 'Eddie Holmes',
     brandName = 'Vets in England',
   } = props as unknown as CertificateA4Props;
 
@@ -252,7 +252,7 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
             font-size: 18px;
             color: #444;
             text-align: center;
-            max-width: 85%;
+            max-width: 90%;
             line-height: 1.6;
             margin-bottom: 20px;
             font-family: 'Inter', sans-serif;
