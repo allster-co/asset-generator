@@ -11,9 +11,11 @@ export type TemplateKey =
 
 export type RenderFormat = 'PNG' | 'PDF';
 
-export type PngVariant = '1080x1080' | '1080x1350' | '1080x1920' | '1920x1080' | '800x800';
+// Common presets for reference, but any WIDTHxHEIGHT is supported
+export type PngVariantPreset = '1080x1080' | '1080x1350' | '1080x1920' | '1920x1080' | '800x800' | '1200x630' | '500x500';
 export type PdfVariant = 'A4' | 'A5';
-export type Variant = PngVariant | PdfVariant;
+// PNG variant can be any WIDTHxHEIGHT string, PDF can be standard paper sizes or custom dimensions
+export type Variant = string;
 
 export interface RenderRequest {
   templateKey: string;
@@ -49,5 +51,21 @@ export interface ApiError {
   requestId?: string;
 }
 
-export const VALID_PNG_VARIANTS: PngVariant[] = ['1080x1080', '1080x1350', '1080x1920', '1920x1080', '800x800'];
+// Preset PNG variants for documentation/reference (any WIDTHxHEIGHT is supported)
+export const PNG_VARIANT_PRESETS: PngVariantPreset[] = ['1080x1080', '1080x1350', '1080x1920', '1920x1080', '800x800', '1200x630', '500x500'];
 export const VALID_PDF_VARIANTS: PdfVariant[] = ['A4', 'A5'];
+
+/**
+ * Validates that a PNG variant is in WIDTHxHEIGHT format with reasonable dimensions.
+ * Returns true if valid, false otherwise.
+ */
+export function isValidPngVariant(variant: string): boolean {
+  const match = variant.match(/^(\d+)x(\d+)$/);
+  if (!match) return false;
+  
+  const width = parseInt(match[1], 10);
+  const height = parseInt(match[2], 10);
+  
+  // Reasonable bounds: minimum 10px, maximum 10000px
+  return width >= 10 && width <= 10000 && height >= 10 && height <= 10000;
+}

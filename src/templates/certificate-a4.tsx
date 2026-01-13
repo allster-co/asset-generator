@@ -18,7 +18,7 @@ interface CertificateA4Props {
   categoryLabel?: string;
   signatureName?: string;
   signatureTitle?: string;
-  country?: string;
+  companyName?: string;
 }
 
 export function CertificateA4(props: Record<string, unknown>): React.ReactElement {
@@ -31,7 +31,7 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
     categoryLabel,
     signatureName = 'E. Holmes',
     signatureTitle = 'Signed E Holmes',
-    country = 'England',
+    companyName = 'Vets in England',
   } = props as unknown as CertificateA4Props;
 
   // Build the title based on whether there's a category
@@ -349,7 +349,7 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
             <div className="signature-section">
               <div className="signature-name">{signatureName}</div>
               <hr className="signature-line" />
-              <div className="signature-title">{signatureTitle}, Founder, Vets in {country}</div>
+              <div className="signature-title">{signatureTitle}, Founder, {companyName}</div>
             </div>
             
             <div className="footer">

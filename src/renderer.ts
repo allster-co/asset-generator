@@ -9,7 +9,7 @@ import { chromium, Browser } from 'playwright';
 import { renderToStaticMarkup } from 'react-dom/server';
 import crypto from 'crypto';
 import { getTemplate, hasTemplate, hasTemplateVersion, getTemplateVersions } from './templates';
-import { RenderResult, VALID_PNG_VARIANTS, VALID_PDF_VARIANTS } from './types';
+import { RenderResult, isValidPngVariant, VALID_PDF_VARIANTS } from './types';
 
 let browser: Browser | null = null;
 
@@ -67,9 +67,10 @@ export function validateRenderOptions(options: RenderOptions): void {
 
   // Validate variant matches format
   if (format === 'PNG') {
-    if (!VALID_PNG_VARIANTS.includes(variant as typeof VALID_PNG_VARIANTS[number])) {
+    // PNG supports any WIDTHxHEIGHT dimensions (e.g., 1080x1080, 1200x630, 500x500)
+    if (!isValidPngVariant(variant)) {
       throw new RenderValidationError(
-        `Invalid PNG variant: ${variant}. Must be one of: ${VALID_PNG_VARIANTS.join(', ')}`
+        `Invalid PNG variant: ${variant}. Must be in WIDTHxHEIGHT format (e.g., 1080x1080, 1200x630, 500x500). Dimensions must be between 10 and 10000 pixels.`
       );
     }
   } else {
