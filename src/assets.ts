@@ -79,6 +79,9 @@ export const assets = {
   socialPostDog: loadAsset('social-post/social-post-dog.png'),
   socialPostCat: loadAsset('social-post/social-post-cat.png'),
   socialPostWatermark: loadAsset('social-post/social-post-watermark.png'),
+  
+  // Rosette assets
+  goldenBanner: loadAsset('rosette/golden-banner.png'),
 
   // Fonts (add actual font files when available)
   fonts: {

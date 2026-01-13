@@ -24,35 +24,35 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
     tier,
   } = props as unknown as RosetteAwardProps;
 
-  // Select rosette based on tier (if provided) or rank
-  let rosetteColor: string;
+  // Select rosette SVG based on tier (if provided) or rank
+  let rosetteAsset: string;
   if (tier) {
     switch (tier) {
       case 'GOLD':
-        rosetteColor = '#D4AF37'; // Gold
+        rosetteAsset = assets.goldRosette;
         break;
       case 'SILVER':
-        rosetteColor = '#C0C0C0'; // Silver
+        rosetteAsset = assets.silverRosette;
         break;
       case 'BRONZE':
-        rosetteColor = '#CD7F32'; // Bronze
+        rosetteAsset = assets.bronzeRosette;
         break;
       case 'GREEN':
-        rosetteColor = '#1A6B52'; // Green
+        rosetteAsset = assets.greenRosette;
         break;
       default:
-        rosetteColor = '#D4AF37'; // Default to gold
+        rosetteAsset = assets.goldRosette;
     }
   } else {
-    // Select color based on rank
+    // Select rosette based on rank
     if (rank === 1) {
-      rosetteColor = '#D4AF37'; // Gold
+      rosetteAsset = assets.goldRosette;
     } else if (rank === 2) {
-      rosetteColor = '#C0C0C0'; // Silver
+      rosetteAsset = assets.silverRosette;
     } else if (rank === 3) {
-      rosetteColor = '#CD7F32'; // Bronze
+      rosetteAsset = assets.bronzeRosette;
     } else {
-      rosetteColor = '#1A6B52'; // Green
+      rosetteAsset = assets.greenRosette;
     }
   }
 
@@ -105,8 +105,8 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
             justify-content: center;
           }
           
-          /* SVG Rosette Badge */
-          .rosette-svg {
+          /* Background rosette SVG */
+          .rosette-background {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -122,177 +122,135 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
             align-items: center;
             justify-content: center;
             text-align: center;
-            width: 380px;
-            margin-top: -40px;
-          }
-          
-          .category-label {
-            font-size: ${isLongCategoryLabel ? '36px' : '42px'};
-            font-weight: 700;
-            color: #FFFFFF;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            font-family: 'Inter', sans-serif;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            width: 450px;
+            margin-top: -30px;
           }
           
           .rank-number {
-            font-size: 160px;
+            font-size: 200px;
             font-weight: 900;
             color: #FFFFFF;
             line-height: 1;
-            margin: 10px 0;
+            margin: 0;
+            padding: 0;
             font-family: 'Montserrat', sans-serif;
-            text-shadow: 3px 3px 12px rgba(0,0,0,0.4);
-            letter-spacing: -5px;
+            text-shadow: 4px 4px 12px rgba(0,0,0,0.3);
+            letter-spacing: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
           
           .hashtag {
-            font-size: 120px;
+            font-size: 150px;
             position: relative;
-            top: -15px;
-            margin-right: -10px;
             font-weight: 800;
+            margin-right: 5px;
           }
           
-          .stars {
-            display: flex;
-            gap: 20px;
-            margin: 5px 0 15px 0;
-          }
-          
-          .star {
-            font-size: 32px;
-            color: #FFFFFF;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-          }
-          
-          .ribbon {
+          .banner-wrapper {
             position: absolute;
-            bottom: 35px;
+            bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
-            background: ${rosetteColor};
-            padding: 16px 60px;
-            border-radius: 8px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-            border: 3px solid rgba(255,255,255,0.3);
             z-index: 3;
-            width: 520px;
+            width: 560px;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
           
-          .ribbon-title {
-            font-size: ${isLongLocationName ? '30px' : '34px'};
+          .banner-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            object-fit: contain;
+          }
+          
+          .banner-text-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 4;
+          }
+          
+          .banner-title-text {
+            font-size: ${isLongLocationName ? '28px' : '32px'};
             font-weight: 800;
-            color: #FFFFFF;
-            margin-bottom: 4px;
+            fill: #1A5642;
             font-family: 'Inter', sans-serif;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
-            text-align: center;
+            filter: drop-shadow(0px 1px 2px rgba(255,255,255,0.3));
           }
           
-          .ribbon-date {
-            font-size: 24px;
+          .banner-date-text {
+            font-size: 26px;
             font-weight: 700;
-            color: rgba(255,255,255,0.95);
+            fill: #1A5642;
             font-family: 'Inter', sans-serif;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-            text-align: center;
-          }
-          
-          /* Rosette shape with gradient */
-          .rosette-circle {
-            fill: url(#gradient);
-            filter: drop-shadow(0px 8px 20px rgba(0,0,0,0.3));
-          }
-          
-          .rosette-ring {
-            fill: none;
-            stroke: ${rosetteColor};
-            stroke-width: 28;
-            opacity: 0.95;
-          }
-          
-          .rosette-inner-circle {
-            fill: ${rosetteColor};
-            opacity: 0.85;
+            filter: drop-shadow(0px 1px 2px rgba(255,255,255,0.3));
           }
         `}</style>
       </head>
       <body data-render-ready="1">
         <div className="container">
           <div className="rosette-wrapper">
-            {/* SVG Rosette Badge */}
-            <svg className="rosette-svg" viewBox="0 0 750 750" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="gradient" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" style={{ stopColor: rosetteColor, stopOpacity: 1 }} />
-                  <stop offset="100%" style={{ stopColor: rosetteColor, stopOpacity: 0.7 }} />
-                </radialGradient>
-              </defs>
-              
-              {/* Outer scalloped edge (rosette petals) */}
-              <g>
-                {Array.from({ length: 24 }).map((_, i) => {
-                  const angle = (i * 360) / 24;
-                  const rad = (angle * Math.PI) / 180;
-                  const x = 375 + Math.cos(rad) * 340;
-                  const y = 375 + Math.sin(rad) * 340;
-                  return (
-                    <circle
-                      key={i}
-                      cx={x}
-                      cy={y}
-                      r="60"
-                      className="rosette-circle"
-                    />
-                  );
-                })}
-              </g>
-              
-              {/* Main outer ring */}
-              <circle cx="375" cy="375" r="290" className="rosette-ring" />
-              
-              {/* Inner circle background */}
-              <circle cx="375" cy="375" r="240" className="rosette-inner-circle" />
-              
-              {/* Ribbon tails at bottom */}
-              <g transform="translate(375, 650)">
-                {/* Left ribbon tail */}
-                <path
-                  d="M -80 0 L -100 100 L -60 80 L -80 0 Z"
-                  fill={rosetteColor}
-                  style={{ filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.3))' }}
-                />
-                {/* Right ribbon tail */}
-                <path
-                  d="M 80 0 L 100 100 L 60 80 L 80 0 Z"
-                  fill={rosetteColor}
-                  style={{ filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.3))' }}
-                />
-              </g>
-            </svg>
+            {/* Background rosette SVG */}
+            <img 
+              src={rosetteAsset} 
+              className="rosette-background" 
+              alt="Rosette"
+            />
             
             {/* Content overlay */}
             <div className="content-wrapper">
-              {categoryLabel && (
-                <div className="category-label">{categoryLabel}</div>
-              )}
-              
               <div className="rank-number">
                 <span className="hashtag">#</span>{rank}
               </div>
-              
-              <div className="stars">
-                <span className="star">★</span>
-                <span className="star">★</span>
-              </div>
             </div>
             
-            {/* Bottom ribbon banner */}
-            <div className="ribbon">
-              <div className="ribbon-title">{title}</div>
-              <div className="ribbon-date">{datePeriod}</div>
+            {/* Bottom banner with golden-banner.png */}
+            <div className="banner-wrapper">
+              <img 
+                src={assets.goldenBanner} 
+                className="banner-image" 
+                alt="Banner"
+              />
+              {/* Curved text using SVG */}
+              <svg className="banner-text-svg" viewBox="0 0 560 130" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  {/* Curved path for title text (curves downward in middle) */}
+                  <path 
+                    id="titleCurve" 
+                    d="M 60 55 Q 280 85 500 55" 
+                    fill="transparent"
+                  />
+                  {/* Curved path for date text (curves downward in middle) */}
+                  <path 
+                    id="dateCurve" 
+                    d="M 100 80 Q 280 108 460 80" 
+                    fill="transparent"
+                  />
+                </defs>
+                
+                {/* Title text on curved path */}
+                <text className="banner-title-text">
+                  <textPath href="#titleCurve" startOffset="50%" textAnchor="middle">
+                    {title}
+                  </textPath>
+                </text>
+                
+                {/* Date text on curved path */}
+                <text className="banner-date-text">
+                  <textPath href="#dateCurve" startOffset="50%" textAnchor="middle">
+                    {datePeriod}
+                  </textPath>
+                </text>
+              </svg>
             </div>
           </div>
         </div>
