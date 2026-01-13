@@ -321,7 +321,7 @@ export function SocialPost(props: Record<string, unknown>): React.ReactElement {
                 <h1 className={`title ${isLongLocationName ? 'title-long' : ''}`}>{title}</h1>
                 <p className="date-period">{datePeriod}</p>
                 <p className="description">
-                  Independently ranked for quality of service and customer reviews.
+                Independently ranked for great service, amazing staff and happy pets!                
                 </p>
               </div>
             </div>

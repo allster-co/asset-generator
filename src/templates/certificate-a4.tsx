@@ -18,7 +18,7 @@ interface CertificateA4Props {
   categoryLabel?: string;
   signatureName?: string;
   signatureTitle?: string;
-  companyName?: string;
+  brandName?: string;
 }
 
 export function CertificateA4(props: Record<string, unknown>): React.ReactElement {
@@ -30,8 +30,8 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
     websiteDomain = 'www.vetsinengland.com',
     categoryLabel,
     signatureName = 'E. Holmes',
-    signatureTitle = 'Signed E Holmes',
-    companyName = 'Vets in England',
+    signatureTitle = 'Signed Eddie Holmes',
+    brandName = 'Vets in England',
   } = props as unknown as CertificateA4Props;
 
   // Build the title based on whether there's a category
@@ -343,13 +343,13 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
             <p className="date-period">{datePeriod}</p>
             
             <p className="description">
-              Independently ranked for quality of service and customer reviews.
+            Independently ranked for great service, amazing staff and happy pets!
             </p>
             
             <div className="signature-section">
               <div className="signature-name">{signatureName}</div>
               <hr className="signature-line" />
-              <div className="signature-title">{signatureTitle}, Founder, {companyName}</div>
+              <div className="signature-title">{signatureTitle}, Founder, {brandName}</div>
             </div>
             
             <div className="footer">

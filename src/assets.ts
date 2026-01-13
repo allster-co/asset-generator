@@ -74,11 +74,11 @@ export const assets = {
   logo: loadAsset('shared/logo.svg'),
   
   // Social Post assets
-  socialPostBackground: loadAsset('social-post/social-post-background.svg'),
-  congratulationsRibbon: loadAsset('social-post/congratulations-ribbon.svg'),
+  socialPostBackground: loadAsset('social-post/social-post-background.png'),
+  congratulationsRibbon: loadAsset('social-post/we-won-ribbon.png'),
   socialPostDog: loadAsset('social-post/social-post-dog.svg'),
-  socialPostCat: loadAsset('social-post/social-post-cat.svg'),
-  socialPostWatermark: loadAsset('social-post/social-post-watermark.svg'),
+  socialPostCat: loadAsset('social-post/social-post-cat.png'),
+  socialPostWatermark: loadAsset('social-post/social-post-watermark.png'),
 
   // Fonts (add actual font files when available)
   fonts: {
