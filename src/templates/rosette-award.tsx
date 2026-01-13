@@ -19,40 +19,51 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
   const {
     rank = 1,
     locationName = 'Location',
-    datePeriod = 'June 2026',
+    datePeriod = 'Q1 2026',
     categoryLabel = 'VetsinEngland',
     tier,
   } = props as unknown as RosetteAwardProps;
 
   // Select rosette SVG based on tier (if provided) or rank
   let rosetteAsset: string;
+  let bannerAsset: string;
+  
   if (tier) {
     switch (tier) {
       case 'GOLD':
         rosetteAsset = assets.goldRosette;
+        bannerAsset = assets.goldenBanner;
         break;
       case 'SILVER':
         rosetteAsset = assets.silverRosette;
+        bannerAsset = assets.silverBanner;
         break;
       case 'BRONZE':
         rosetteAsset = assets.bronzeRosette;
+        bannerAsset = assets.bronzeBanner;
         break;
       case 'GREEN':
         rosetteAsset = assets.greenRosette;
+        bannerAsset = assets.greenBanner;
         break;
       default:
         rosetteAsset = assets.goldRosette;
+        bannerAsset = assets.goldenBanner;
     }
   } else {
-    // Select rosette based on rank
+    // Select rosette and banner based on rank
     if (rank === 1) {
       rosetteAsset = assets.goldRosette;
+      bannerAsset = assets.goldenBanner;
     } else if (rank === 2) {
       rosetteAsset = assets.silverRosette;
+      bannerAsset = assets.silverBanner;
     } else if (rank === 3) {
       rosetteAsset = assets.bronzeRosette;
+      bannerAsset = assets.bronzeBanner;
     } else {
       rosetteAsset = assets.greenRosette;
+      bannerAsset = assets.greenBanner;
     }
   }
 
@@ -63,6 +74,10 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
   // Calculate font sizes based on content length
   const isLongCategoryLabel = categoryLabel && categoryLabel.length > 15;
   const isLongLocationName = locationName.length > 12;
+  
+  // Determine if this is a green tier (rank 4+ or tier === 'GREEN')
+  const isGreenTier = tier === 'GREEN' || (!tier && rank >= 4);
+  const textColor = isGreenTier ? '#FFFFFF' : '#1A5642';
 
   return (
     <html>
@@ -123,17 +138,17 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
             justify-content: center;
             text-align: center;
             width: 450px;
-            margin-top: -30px;
+            margin-top: -120px;
           }
           
           .rank-number {
-            font-size: 200px;
+            font-size: 180px;
             font-weight: 900;
             color: #FFFFFF;
             line-height: 1;
             margin: 0;
             padding: 0;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', sans-serif;
             text-shadow: 4px 4px 12px rgba(0,0,0,0.3);
             letter-spacing: 0;
             display: flex;
@@ -142,8 +157,9 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
           }
           
           .hashtag {
-            font-size: 150px;
+            font-size: 130px;
             position: relative;
+            font-family: 'Inter', sans-serif;
             font-weight: 800;
             margin-right: 5px;
           }
@@ -174,25 +190,26 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
             position: absolute;
             width: 100%;
             height: 100%;
-            top: 0;
+            top: -10px;
             left: 0;
             z-index: 4;
           }
           
           .banner-title-text {
-            font-size: ${isLongLocationName ? '28px' : '32px'};
+            font-size: ${isLongLocationName ? '24px' : '32px'};
             font-weight: 800;
-            fill: #1A5642;
+            fill: ${textColor};
             font-family: 'Inter', sans-serif;
-            filter: drop-shadow(0px 1px 2px rgba(255,255,255,0.3));
+            filter: drop-shadow(0px 1px 2px rgba(${isGreenTier ? '0,0,0' : '255,255,255'},0.3));
           }
           
           .banner-date-text {
             font-size: 26px;
+            padding-top: 10px;
             font-weight: 700;
-            fill: #1A5642;
+            fill: ${textColor};
             font-family: 'Inter', sans-serif;
-            filter: drop-shadow(0px 1px 2px rgba(255,255,255,0.3));
+            filter: drop-shadow(0px 1px 2px rgba(${isGreenTier ? '0,0,0' : '255,255,255'},0.3));
           }
         `}</style>
       </head>
@@ -213,10 +230,10 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
               </div>
             </div>
             
-            {/* Bottom banner with golden-banner.png */}
+            {/* Bottom banner with selected banner image */}
             <div className="banner-wrapper">
               <img 
-                src={assets.goldenBanner} 
+                src={bannerAsset} 
                 className="banner-image" 
                 alt="Banner"
               />
@@ -226,13 +243,13 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
                   {/* Curved path for title text (curves downward in middle) */}
                   <path 
                     id="titleCurve" 
-                    d="M 60 55 Q 280 85 500 55" 
+                    d="M 60 48 Q 280 104 500 48" 
                     fill="transparent"
                   />
                   {/* Curved path for date text (curves downward in middle) */}
                   <path 
                     id="dateCurve" 
-                    d="M 100 80 Q 280 108 460 80" 
+                    d="M 100 91 Q 280 145 460 91" 
                     fill="transparent"
                   />
                 </defs>

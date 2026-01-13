@@ -82,6 +82,9 @@ export const assets = {
   
   // Rosette assets
   goldenBanner: loadAsset('rosette/golden-banner.png'),
+  silverBanner: loadAsset('rosette/silver-banner.png'),
+  bronzeBanner: loadAsset('rosette/bronze-banner.png'),
+  greenBanner: loadAsset('rosette/green-banner.png'),
 
   // Fonts (add actual font files when available)
   fonts: {
