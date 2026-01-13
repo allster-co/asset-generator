@@ -15,10 +15,22 @@ let browser: Browser | null = null;
 
 async function getBrowser(): Promise<Browser> {
   if (!browser) {
-    browser = await chromium.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
-    console.log('[renderer] Browser launched');
+    console.log('[renderer] Launching browser...');
+    try {
+      browser = await chromium.launch({
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--single-process',
+        ],
+      });
+      console.log('[renderer] Browser launched successfully');
+    } catch (error) {
+      console.error('[renderer] Failed to launch browser:', error);
+      throw error;
+    }
   }
   return browser;
 }
@@ -93,16 +105,22 @@ export function validateRenderOptions(options: RenderOptions): void {
 export async function render(options: RenderOptions): Promise<RenderResult> {
   const { templateKey, templateVersion, variant, format, payload } = options;
 
+  console.log(`[renderer] Starting render: ${templateKey} ${variant} ${format}`);
+
   // Validate options (throws if invalid)
   validateRenderOptions(options);
 
   const Template = getTemplate(templateKey, templateVersion)!;
 
   // Render React component to HTML string
+  console.log('[renderer] Rendering React component to HTML...');
   const html = renderToStaticMarkup(Template(payload));
+  console.log(`[renderer] HTML generated: ${html.length} bytes`);
 
-  const browser = await getBrowser();
-  const page = await browser.newPage();
+  console.log('[renderer] Getting browser...');
+  const browserInstance = await getBrowser();
+  console.log('[renderer] Creating new page...');
+  const page = await browserInstance.newPage();
 
   let width: number | undefined;
   let height: number | undefined;
@@ -148,6 +166,8 @@ export async function render(options: RenderOptions): Promise<RenderResult> {
     let buffer: Buffer;
     let mimeType: string;
 
+    console.log(`[renderer] Generating ${format}...`);
+
     if (format === 'PDF') {
       // PDF: format from variant (A4, A5, etc.) or custom dimensions
       if (variant === 'CUSTOM' || variant.includes('x')) {
@@ -181,9 +201,23 @@ export async function render(options: RenderOptions): Promise<RenderResult> {
     // Compute content hash (SHA-256)
     const contentHash = crypto.createHash('sha256').update(buffer).digest('hex');
 
+    console.log(`[renderer] Render complete: ${buffer.length} bytes, hash=${contentHash.slice(0, 12)}...`);
+
     return { buffer, contentHash, mimeType, width, height };
+  } catch (error) {
+    console.error('[renderer] Render failed:', error);
+    throw error;
   } finally {
+    console.log('[renderer] Closing page...');
     await page.close();
+    
+    // Force garbage collection hint by closing browser after each render
+    // This helps prevent memory buildup on memory-constrained containers
+    if (browser) {
+      console.log('[renderer] Closing browser to free memory...');
+      await browser.close();
+      browser = null;
+    }
   }
 }
 
