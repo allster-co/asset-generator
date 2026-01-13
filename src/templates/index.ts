@@ -10,6 +10,7 @@ import { CertificateA4 } from './certificate-a4';
 import { SocialSquare } from './social-square';
 import { SocialPost } from './social-post';
 import { Display16x9 } from './display-16x9';
+import { RosetteAward } from './rosette-award';
 
 export type TemplateComponent = (props: Record<string, unknown>) => React.ReactElement;
 
@@ -29,6 +30,9 @@ export const templates: Record<string, Record<number, TemplateComponent>> = {
   },
   'display-16x9': {
     1: Display16x9,
+  },
+  'rosette-award': {
+    1: RosetteAward,
   },
 };
 

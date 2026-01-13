@@ -136,8 +136,10 @@ Render a template to PNG or PDF.
 |-------------|--------|----------|-------------|
 | `certificate-a4` | PDF | `A4`, `A5` | Print certificate |
 | `social-square` | PNG | `1080x1080` | Instagram/Facebook post |
+| `social-post` | PNG | `1080x1350` | Instagram/Facebook post |
 | `social-story` | PNG | `1080x1920` | Instagram/Facebook story |
 | `display-16x9` | PNG | `1920x1080` | Website banner |
+| `rosette-award` | PNG | `800x800` | Standalone rosette badge |
 
 ### Variant Rules
 

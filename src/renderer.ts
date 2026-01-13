@@ -48,7 +48,7 @@ export function validateRenderOptions(options: RenderOptions): void {
   // Validate template key exists
   if (!hasTemplate(templateKey)) {
     throw new RenderValidationError(
-      `Unknown template: ${templateKey}. Available: certificate-a4, social-square, social-post, display-16x9`
+      `Unknown template: ${templateKey}. Available: certificate-a4, social-square, social-post, display-16x9, rosette-award`
     );
   }
 

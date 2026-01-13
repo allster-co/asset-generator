@@ -6,11 +6,12 @@ export type TemplateKey =
   | 'certificate-a4'
   | 'social-square'
   | 'social-post'
-  | 'display-16x9';
+  | 'display-16x9'
+  | 'rosette-award';
 
 export type RenderFormat = 'PNG' | 'PDF';
 
-export type PngVariant = '1080x1080' | '1080x1350' | '1080x1920' | '1920x1080';
+export type PngVariant = '1080x1080' | '1080x1350' | '1080x1920' | '1920x1080' | '800x800';
 export type PdfVariant = 'A4' | 'A5';
 export type Variant = PngVariant | PdfVariant;
 
@@ -48,5 +49,5 @@ export interface ApiError {
   requestId?: string;
 }
 
-export const VALID_PNG_VARIANTS: PngVariant[] = ['1080x1080', '1080x1350', '1080x1920', '1920x1080'];
+export const VALID_PNG_VARIANTS: PngVariant[] = ['1080x1080', '1080x1350', '1080x1920', '1920x1080', '800x800'];
 export const VALID_PDF_VARIANTS: PdfVariant[] = ['A4', 'A5'];
