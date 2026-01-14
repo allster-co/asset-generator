@@ -21,50 +21,28 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
     locationName = 'Location',
     datePeriod = 'Q1 2026',
     categoryLabel = 'VetsinEngland',
-    tier,
   } = props as unknown as RosetteAwardProps;
 
-  // Select rosette SVG based on tier (if provided) or rank
+  // Select rosette and banner based on rank (matching certificate and social-post logic)
   let rosetteAsset: string;
   let bannerAsset: string;
   
-  if (tier) {
-    switch (tier) {
-      case 'GOLD':
-        rosetteAsset = assets.goldRosette;
-        bannerAsset = assets.goldenBanner;
-        break;
-      case 'SILVER':
-        rosetteAsset = assets.silverRosette;
-        bannerAsset = assets.silverBanner;
-        break;
-      case 'BRONZE':
-        rosetteAsset = assets.bronzeRosette;
-        bannerAsset = assets.bronzeBanner;
-        break;
-      case 'GREEN':
-        rosetteAsset = assets.greenRosette;
-        bannerAsset = assets.greenBanner;
-        break;
-      default:
-        rosetteAsset = assets.goldRosette;
-        bannerAsset = assets.goldenBanner;
-    }
+  if (rank === 1) {
+    rosetteAsset = assets.goldRosette;
+    bannerAsset = assets.goldenBanner;
+  } else if (rank === 2) {
+    rosetteAsset = assets.silverRosette;
+    bannerAsset = assets.silverBanner;
+  } else if (rank === 3) {
+    rosetteAsset = assets.bronzeRosette;
+    bannerAsset = assets.bronzeBanner;
+  } else if (rank >= 4 && rank <= 10) {
+    rosetteAsset = assets.greenRosette;
+    bannerAsset = assets.greenBanner;
   } else {
-    // Select rosette and banner based on rank
-    if (rank === 1) {
-      rosetteAsset = assets.goldRosette;
-      bannerAsset = assets.goldenBanner;
-    } else if (rank === 2) {
-      rosetteAsset = assets.silverRosette;
-      bannerAsset = assets.silverBanner;
-    } else if (rank === 3) {
-      rosetteAsset = assets.bronzeRosette;
-      bannerAsset = assets.bronzeBanner;
-    } else {
-      rosetteAsset = assets.greenRosette;
-      bannerAsset = assets.greenBanner;
-    }
+    // Default to green for ranks outside 1-10
+    rosetteAsset = assets.greenRosette;
+    bannerAsset = assets.greenBanner;
   }
 
   // Format the title
@@ -75,8 +53,8 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
   const isLongCategoryLabel = categoryLabel && categoryLabel.length > 15;
   const isLongLocationName = locationName.length > 12;
   
-  // Determine if this is a green tier (rank 4+ or tier === 'GREEN')
-  const isGreenTier = tier === 'GREEN' || (!tier && rank >= 4);
+  // Determine if this is a green tier (rank 4+)
+  const isGreenTier = rank >= 4;
   const textColor = isGreenTier ? '#FFFFFF' : '#1A5642';
 
   return (

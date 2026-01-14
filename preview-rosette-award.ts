@@ -13,7 +13,7 @@ async function generatePreview() {
 
   // Sample data for the rosette award
   const payload = {
-    rank: 1,
+    rank: 4,
     locationName: 'Wakefield',
     datePeriod: 'June 2026',
     categoryLabel: 'VetsinEngland',

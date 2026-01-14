@@ -149,7 +149,7 @@ export function SocialSquare(props: Record<string, unknown>): React.ReactElement
             left: -90px;
             width: 420px;
             height: auto;
-            margin-bottom: -280px;
+            margin-bottom: -230px;
           }
           
           .rosette-container {
@@ -181,7 +181,7 @@ export function SocialSquare(props: Record<string, unknown>): React.ReactElement
             right: -120px;
             width: 360px;
             height: auto;
-            margin-bottom: -280px;
+            margin-bottom: -230px;
           }
           
           .info-box {

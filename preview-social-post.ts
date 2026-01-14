@@ -13,7 +13,7 @@ async function generatePreview() {
 
   // Sample data for the social post
   const payload = {
-    rank: 1,
+    rank: 4,
     locationName: 'Greater Manchester',
     clinicName: 'Wakefield Veterinary Clinic',
     datePeriod: 'January - March 2026',

@@ -44,19 +44,25 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
   // Reduce font size for long clinic names
   const isLongClinicName = clinicName.length > 50;
 
-  // Select rosette based on rank
+  // Select rosette and divider based on rank
   let rosetteImage: string;
+  let dividerImage: string;
   if (rank === 1) {
     rosetteImage = assets.goldRosette;
+    dividerImage = assets.dividerGold;
   } else if (rank === 2) {
     rosetteImage = assets.silverRosette;
+    dividerImage = assets.dividerSilver;
   } else if (rank === 3) {
     rosetteImage = assets.bronzeRosette;
+    dividerImage = assets.dividerBronze;
   } else if (rank >= 4 && rank <= 10) {
     rosetteImage = assets.greenRosette;
+    dividerImage = assets.dividerGreen;
   } else {
     // Default to green for ranks outside 1-10
     rosetteImage = assets.greenRosette;
+    dividerImage = assets.dividerGreen;
   }
 
   return (
@@ -323,8 +329,8 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
           )}
          
           <div className="content">
-            {assets.divider && (
-              <img src={assets.divider} className="divider-top" alt="" />
+            {dividerImage && (
+              <img src={dividerImage} className="divider-top" alt="" />
             )}
             
             <h2 className={`clinic-name-top ${isLongClinicName ? 'clinic-name-top-long' : ''}`}>{clinicName}</h2>
@@ -362,8 +368,8 @@ export function CertificateA4(props: Record<string, unknown>): React.ReactElemen
               </div>
             </div>
             
-            {assets.divider && (
-              <img src={assets.divider} className="divider-bottom" alt="" />
+            {dividerImage && (
+              <img src={dividerImage} className="divider-bottom" alt="" />
             )}
           </div>
           

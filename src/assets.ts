@@ -64,6 +64,10 @@ export const assets = {
   // Certificate assets
   backgroundFrame: loadAsset('certificate/certificate-background-frame.png'),
   divider: loadAsset('certificate/divider.svg'),
+  dividerGold: loadAsset('certificate/divider-gold.svg'),
+  dividerSilver: loadAsset('certificate/divider-silver.svg'),
+  dividerBronze: loadAsset('certificate/divider-bronze.svg'),
+  dividerGreen: loadAsset('certificate/divider-green.svg'),
   watermarkOverlay: loadAsset('certificate/certificate-watermark-overlay.png'),
   
   // Shared assets (rosettes and logo)
