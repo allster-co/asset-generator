@@ -148,7 +148,7 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
-            width: 560px;
+            width: 616px;
             height: 130px;
             display: flex;
             align-items: center;
@@ -160,8 +160,9 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
             width: 100%;
             height: 100%;
             top: 0;
-            left: 0;
+            left: 0px;
             object-fit: contain;
+            transform: scaleX(1.4);
           }
           
           .banner-text-svg {
@@ -174,7 +175,7 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
           }
           
           .banner-title-text {
-            font-size: ${isLongLocationName ? '24px' : '32px'};
+            font-size: ${isLongLocationName ? '32px' : '36px'};
             font-weight: 800;
             fill: ${textColor};
             font-family: 'Inter', sans-serif;
@@ -228,25 +229,31 @@ export function RosetteAward(props: Record<string, unknown>): React.ReactElement
                 alt="Banner"
               />
               {/* Curved text using SVG */}
-              <svg className="banner-text-svg" viewBox="0 0 560 130" xmlns="http://www.w3.org/2000/svg">
+              <svg className="banner-text-svg" viewBox="0 0 616 130" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  {/* Curved path for title text (curves downward in middle) */}
+                  {/* Curved path for title text - normal size (shifted down 5px, centered, reduced curve) */}
                   <path 
-                    id="titleCurve" 
-                    d="M 60 48 Q 280 104 500 48" 
+                    id="titleCurveNormal" 
+                    d="M 66 50 Q 308 100 550 50" 
                     fill="transparent"
                   />
-                  {/* Curved path for date text (curves downward in middle) */}
+                  {/* Curved path for title text - long names (shifted down 7px, centered, reduced curve) */}
+                  <path 
+                    id="titleCurveLong" 
+                    d="M 66 51 Q 308 95 550 53" 
+                    fill="transparent"
+                  />
+                  {/* Curved path for date text (curves downward in middle, centered, shifted down 3px) */}
                   <path 
                     id="dateCurve" 
-                    d="M 100 91 Q 280 145 460 91" 
+                    d="M 110 89 Q 308 143 506 89" 
                     fill="transparent"
                   />
                 </defs>
                 
                 {/* Title text on curved path */}
                 <text className="banner-title-text">
-                  <textPath href="#titleCurve" startOffset="50%" textAnchor="middle">
+                  <textPath href={isLongLocationName ? "#titleCurveLong" : "#titleCurveNormal"} startOffset="50%" textAnchor="middle">
                     {title}
                   </textPath>
                 </text>

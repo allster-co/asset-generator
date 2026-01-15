@@ -163,11 +163,12 @@ export function SocialPost(props: Record<string, unknown>): React.ReactElement {
           .rosette-img {
             width: 100%;
             height: auto;
+            margin-top: -20px;
           }
           
           .rank-number {
             position: absolute;
-            top: 50%;
+            top: calc(50% - 20px);
             left: 50%;
             transform: translate(-50%, -80%);
             font-size: 120px;
