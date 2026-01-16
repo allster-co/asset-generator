@@ -12,27 +12,103 @@ import { getTemplate, hasTemplate, hasTemplateVersion, getTemplateVersions } fro
 import { RenderResult, isValidPngVariant, VALID_PDF_VARIANTS } from './types';
 
 let browser: Browser | null = null;
+let browserLaunchInProgress: Promise<Browser> | null = null;
+
+// Track consecutive browser crashes for circuit breaker
+let consecutiveBrowserCrashes = 0;
+const MAX_CONSECUTIVE_CRASHES = 3;
+const CRASH_WINDOW_MS = 60_000; // Reset counter if no crashes for 1 minute
+let lastCrashTime = 0;
+
+// Pattern to detect browser crash errors
+const BROWSER_CRASH_PATTERNS = [
+  /Target.*closed/i,
+  /browser.*closed/i,
+  /page.*closed/i,
+  /context.*closed/i,
+  /crashed/i,
+  /disconnected/i,
+];
+
+function isBrowserCrashError(error: Error): boolean {
+  return BROWSER_CRASH_PATTERNS.some(pattern => pattern.test(error.message));
+}
+
+function recordBrowserCrash(): void {
+  const now = Date.now();
+  
+  // Reset counter if it's been a while since last crash
+  if (now - lastCrashTime > CRASH_WINDOW_MS) {
+    consecutiveBrowserCrashes = 0;
+  }
+  
+  consecutiveBrowserCrashes++;
+  lastCrashTime = now;
+  
+  console.error(`[renderer] Browser crash recorded (${consecutiveBrowserCrashes}/${MAX_CONSECUTIVE_CRASHES} in window)`);
+  
+  // If we've had too many crashes, exit the process so Render.com can restart us fresh
+  if (consecutiveBrowserCrashes >= MAX_CONSECUTIVE_CRASHES) {
+    console.error('[renderer] FATAL: Too many consecutive browser crashes, exiting process for restart...');
+    // Give time for logs to flush
+    setTimeout(() => process.exit(1), 1000);
+  }
+}
+
+function recordBrowserSuccess(): void {
+  // Reset crash counter on successful render
+  if (consecutiveBrowserCrashes > 0) {
+    console.log(`[renderer] Browser recovered, resetting crash counter (was ${consecutiveBrowserCrashes})`);
+    consecutiveBrowserCrashes = 0;
+  }
+}
 
 async function getBrowser(): Promise<Browser> {
-  if (!browser) {
-    console.log('[renderer] Launching browser...');
-    try {
-      browser = await chromium.launch({
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-gpu',
-          '--single-process',
-        ],
-      });
-      console.log('[renderer] Browser launched successfully');
-    } catch (error) {
-      console.error('[renderer] Failed to launch browser:', error);
-      throw error;
-    }
+  // If browser exists and is still connected, return it
+  if (browser && browser.isConnected()) {
+    return browser;
   }
-  return browser;
+  
+  // Browser is dead or null - need to (re)launch
+  if (browser) {
+    console.log('[renderer] Browser disconnected, will relaunch...');
+    browser = null;
+  }
+  
+  // If a launch is already in progress, wait for it
+  if (browserLaunchInProgress) {
+    console.log('[renderer] Browser launch already in progress, waiting...');
+    return browserLaunchInProgress;
+  }
+  
+  console.log('[renderer] Launching browser...');
+  browserLaunchInProgress = chromium.launch({
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--single-process',
+    ],
+  });
+  
+  try {
+    browser = await browserLaunchInProgress;
+    console.log('[renderer] Browser launched successfully');
+    
+    // Listen for unexpected disconnects
+    browser.on('disconnected', () => {
+      console.error('[renderer] Browser disconnected unexpectedly!');
+      browser = null;
+    });
+    
+    return browser;
+  } catch (error) {
+    console.error('[renderer] Failed to launch browser:', error);
+    throw error;
+  } finally {
+    browserLaunchInProgress = null;
+  }
 }
 
 export interface RenderOptions {
@@ -101,6 +177,7 @@ export function validateRenderOptions(options: RenderOptions): void {
 /**
  * Render a template to PNG or PDF.
  * Returns buffer with content hash and metadata.
+ * Includes automatic recovery from browser crashes.
  */
 export async function render(options: RenderOptions): Promise<RenderResult> {
   const { templateKey, templateVersion, variant, format, payload } = options;
@@ -117,10 +194,41 @@ export async function render(options: RenderOptions): Promise<RenderResult> {
   const html = renderToStaticMarkup(Template(payload));
   console.log(`[renderer] HTML generated: ${html.length} bytes`);
 
+  // Try to get browser and create page, with crash recovery
   console.log('[renderer] Getting browser...');
-  const browserInstance = await getBrowser();
+  let browserInstance: Browser;
+  try {
+    browserInstance = await getBrowser();
+  } catch (error) {
+    if (isBrowserCrashError(error as Error)) {
+      console.error('[renderer] Browser crashed during getBrowser, resetting state...');
+      recordBrowserCrash();
+      browser = null;
+      browserLaunchInProgress = null;
+      // Retry once after resetting
+      browserInstance = await getBrowser();
+    } else {
+      throw error;
+    }
+  }
+  
   console.log('[renderer] Creating new page...');
-  const page = await browserInstance.newPage();
+  let page;
+  try {
+    page = await browserInstance.newPage();
+  } catch (error) {
+    if (isBrowserCrashError(error as Error)) {
+      console.error('[renderer] Browser crashed during newPage, resetting and retrying...');
+      recordBrowserCrash();
+      browser = null;
+      browserLaunchInProgress = null;
+      // Retry once with fresh browser
+      browserInstance = await getBrowser();
+      page = await browserInstance.newPage();
+    } else {
+      throw error;
+    }
+  }
 
   let width: number | undefined;
   let height: number | undefined;
@@ -203,19 +311,43 @@ export async function render(options: RenderOptions): Promise<RenderResult> {
 
     console.log(`[renderer] Render complete: ${buffer.length} bytes, hash=${contentHash.slice(0, 12)}...`);
 
+    // Record successful render (resets crash counter)
+    recordBrowserSuccess();
+
     return { buffer, contentHash, mimeType, width, height };
   } catch (error) {
     console.error('[renderer] Render failed:', error);
+    
+    // If this is a browser crash, record it and reset state
+    if (isBrowserCrashError(error as Error)) {
+      console.error('[renderer] Browser crash detected during render, resetting browser state...');
+      recordBrowserCrash();
+      browser = null;
+      browserLaunchInProgress = null;
+    }
+    
     throw error;
   } finally {
-    console.log('[renderer] Closing page...');
-    await page.close();
+    // Safely close page if it exists
+    if (page) {
+      try {
+        console.log('[renderer] Closing page...');
+        await page.close();
+      } catch (closeError) {
+        // Page might already be closed if browser crashed
+        console.log('[renderer] Page close failed (likely already closed):', (closeError as Error).message);
+      }
+    }
     
     // Force garbage collection hint by closing browser after each render
     // This helps prevent memory buildup on memory-constrained containers
-    if (browser) {
-      console.log('[renderer] Closing browser to free memory...');
-      await browser.close();
+    if (browser && browser.isConnected()) {
+      try {
+        console.log('[renderer] Closing browser to free memory...');
+        await browser.close();
+      } catch (closeError) {
+        console.log('[renderer] Browser close failed:', (closeError as Error).message);
+      }
       browser = null;
     }
   }
